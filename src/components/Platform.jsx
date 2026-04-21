@@ -23,6 +23,10 @@ import AnalisisModule from './modules/AnalisisModule'
 import EvaluacionesModule from './modules/EvaluacionesModule'
 import ReportesModule from './modules/ReportesModule'
 
+import DashboardGerencia from './dashboards/DashboardGerencia'
+import DashboardEmpresasBancos from './dashboards/DashboardEmpresasBancos'
+import DashboardUsuarios from './dashboards/DashboardUsuarios'
+
 const NAV_ITEMS = [
   { id: 'dashboard',      label: 'Dashboard',       icon: LayoutDashboard },
   { id: 'ahorro',         label: 'Ahorro ACAP',     icon: PiggyBank       },
@@ -45,10 +49,23 @@ const MODULE_TITLES = {
   reportes:       'Reportes',
 }
 
-function renderModule(activeModule, setActiveModule) {
+const ROLE_LABELS = {
+  gerencia: 'Gerencia',
+  empresa:  'Empresa / Banco',
+  usuario:  'Miembro ACAP',
+}
+
+function renderModule(activeModule, setActiveModule, userRole) {
   const sharedProps = { activeModule, setActiveModule }
+
+  if (activeModule === 'dashboard') {
+    if (userRole === 'gerencia') return <DashboardGerencia {...sharedProps} />
+    if (userRole === 'empresa')  return <DashboardEmpresasBancos {...sharedProps} />
+    if (userRole === 'usuario')  return <DashboardUsuarios {...sharedProps} />
+    return <DashboardGerencia {...sharedProps} />
+  }
+
   switch (activeModule) {
-    case 'dashboard':      return <DashboardModule      {...sharedProps} />
     case 'ahorro':         return <AhorroModule         {...sharedProps} />
     case 'credito':        return <CreditoModule        {...sharedProps} />
     case 'proyectos':      return <ProyectosModule      {...sharedProps} />
@@ -56,13 +73,13 @@ function renderModule(activeModule, setActiveModule) {
     case 'analisis':       return <AnalisisModule       {...sharedProps} />
     case 'evaluaciones':   return <EvaluacionesModule   {...sharedProps} />
     case 'reportes':       return <ReportesModule       {...sharedProps} />
-    default:               return <DashboardModule      {...sharedProps} />
+    default:               return <DashboardGerencia    {...sharedProps} />
   }
 }
 
-export default function Platform() {
-  const [activeModule, setActiveModule]         = useState('dashboard')
-  const [notifications, setNotifications]       = useState(2)
+export default function Platform({ userRole = 'usuario' }) {
+  const [activeModule, setActiveModule]           = useState('dashboard')
+  const [notifications, setNotifications]         = useState(2)
   const [showNotifications, setShowNotifications] = useState(false)
 
   return (
@@ -75,21 +92,25 @@ export default function Platform() {
       >
         {/* Logo area */}
         <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
-          {/* Orange circle with "C" */}
           <div
             className="flex items-center justify-center rounded-full w-9 h-9 shrink-0 font-bold text-white text-lg select-none"
             style={{ backgroundColor: '#F97316' }}
           >
             C
           </div>
-          {/* Wordmark */}
           <span className="text-white font-semibold text-base leading-tight tracking-wide">
             Cred<span style={{ color: '#F97316' }} className="font-bold">impacto</span>
           </span>
         </div>
 
+        {/* Rol badge */}
+        <div className="px-4 pt-3 pb-1">
+          <span className="text-xs text-white/40 uppercase tracking-wider">Vista:</span>
+          <p className="text-white/80 text-xs font-semibold mt-0.5">{ROLE_LABELS[userRole] || 'Plataforma'}</p>
+        </div>
+
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2">
+        <nav className="flex-1 overflow-y-auto py-2 px-2">
           {NAV_ITEMS.map(({ id, label, icon: Icon }) => {
             const isActive = activeModule === id
             return (
@@ -109,6 +130,7 @@ export default function Platform() {
                   size={18}
                   className="shrink-0"
                   style={isActive ? { color: '#F97316' } : {}}
+                  aria-hidden="true"
                 />
                 <span className={`text-sm font-medium ${isActive ? 'font-semibold' : ''}`}>
                   {label}
@@ -120,7 +142,6 @@ export default function Platform() {
 
         {/* Bottom user area */}
         <div className="border-t border-white/10 px-4 py-4 flex items-center gap-3">
-          {/* Avatar */}
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 font-bold text-white text-sm select-none"
             style={{ backgroundColor: '#0891B2' }}
@@ -136,8 +157,9 @@ export default function Platform() {
           <button
             className="text-white/50 hover:text-white transition-colors duration-150 cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/10"
             title="Configuración"
+            aria-label="Configuración"
           >
-            <Settings size={16} />
+            <Settings size={16} aria-hidden="true" />
           </button>
         </div>
       </aside>
@@ -146,49 +168,46 @@ export default function Platform() {
       <header
         className="fixed top-0 left-60 right-0 h-16 bg-white border-b border-slate-200 shadow-sm flex items-center px-6 gap-4 z-20"
       >
-        {/* Module title */}
         <h1 className="text-base font-semibold flex-1 truncate" style={{ color: '#1E293B' }}>
           {MODULE_TITLES[activeModule]}
         </h1>
 
-        {/* Period selector */}
         <button
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors duration-150 cursor-pointer text-sm font-medium min-h-[44px]"
           style={{ color: '#1E293B' }}
         >
           Abril 2026
-          <ChevronDown size={14} className="text-slate-400" />
+          <ChevronDown size={14} className="text-slate-400" aria-hidden="true" />
         </button>
 
-        {/* Right controls */}
         <div className="flex items-center gap-1">
-          {/* Search */}
           <button
             className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors duration-150 cursor-pointer text-slate-500 hover:text-slate-700"
             title="Buscar"
+            aria-label="Buscar"
           >
-            <Search size={18} />
+            <Search size={18} aria-hidden="true" />
           </button>
 
-          {/* Notifications */}
           <div className="relative">
             <button
               onClick={() => setShowNotifications((prev) => !prev)}
               className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors duration-150 cursor-pointer text-slate-500 hover:text-slate-700"
               title="Notificaciones"
+              aria-label={`Notificaciones${notifications > 0 ? `, ${notifications} sin leer` : ''}`}
             >
-              <Bell size={18} />
+              <Bell size={18} aria-hidden="true" />
               {notifications > 0 && (
                 <span
                   className="absolute top-1.5 right-1.5 min-w-[16px] h-4 flex items-center justify-center rounded-full text-[10px] font-bold text-white px-0.5"
                   style={{ backgroundColor: '#EF4444' }}
+                  aria-hidden="true"
                 >
                   {notifications}
                 </span>
               )}
             </button>
 
-            {/* Notification dropdown */}
             {showNotifications && (
               <div className="absolute right-0 top-12 w-72 bg-white rounded-xl border border-slate-200 shadow-lg z-50 overflow-hidden">
                 <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
@@ -232,7 +251,6 @@ export default function Platform() {
             )}
           </div>
 
-          {/* User greeting */}
           <div className="ml-2 pl-3 border-l border-slate-200 flex items-center min-h-[44px]">
             <span className="text-sm font-medium" style={{ color: '#1E293B' }}>
               Hola,{' '}
@@ -246,7 +264,6 @@ export default function Platform() {
 
       {/* ── MAIN CONTENT ────────────────────────────────────────── */}
       <main className="ml-60 pt-16 min-h-screen w-full" style={{ backgroundColor: '#F8FAFC' }}>
-        {/* Overlay to close notifications when clicking outside */}
         {showNotifications && (
           <div
             className="fixed inset-0 z-10"
@@ -254,8 +271,8 @@ export default function Platform() {
           />
         )}
 
-        <div key={activeModule}>
-          {renderModule(activeModule, setActiveModule)}
+        <div key={`${activeModule}-${userRole}`}>
+          {renderModule(activeModule, setActiveModule, userRole)}
         </div>
       </main>
 

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 \"C:\\\\Users\\\\User\\\\.claude\\\\plugins\\\\cache\\\\ui-ux-pro-max-skill\\\\ui-ux-pro-max\\\\2.5.0\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"microfinance fintech dashboard analytics social impact Colombia\" --design-system -p \"Credimpacto\")",
+      "Bash(py --version)",
+      "Bash(py \"C:\\\\Users\\\\User\\\\.claude\\\\plugins\\\\cache\\\\ui-ux-pro-max-skill\\\\ui-ux-pro-max\\\\2.5.0\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"microfinance fintech dashboard analytics social impact Colombia\" --design-system -p \"Credimpacto\")"
+    ]
+  }
+}

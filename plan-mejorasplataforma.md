@@ -11,6 +11,51 @@
 
 ---
 
+## MÓDULO CARTERA (INDEPENDIENTE)
+**Ubicación:** `src/components/modules/CarteraModule.jsx`
+
+**Estructura:**
+- 2 Tabs principales: "Cartera Interna" | "Cartera Externa"
+
+### TAB 1: CARTERA INTERNA
+**KPIs (4 cards):**
+- Cartera Interna Total: $21.8M
+- Cartera Al Día: $19.6M (✓ verde)
+- Cartera Vencida: $2.2M (⚠️ naranja)
+- Índice de Mora: 9.79%
+
+**Alerta Agente Analista:**
+- "2 miembros de Yoduijoné presentan riesgo de mora. Notificación automática programada vía WhatsApp para el 20 de Abril."
+
+**Tabla: Deudores — Cartera Interna**
+- Columnas: Nombre | Comunidad | Mes | Cuotas | Próximo Pago | Estado | Score IA | Acción (botón)
+- Datos: 7+ deudores con información completa
+- Filtros/búsqueda disponibles
+
+### TAB 2: CARTERA EXTERNA
+**KPIs (4 cards):**
+- Total Recibido: $24.3M
+- Monto Utilizado: $19.1M
+- Disponible: $5.2M
+- Próximo Vencimiento: 30 Abr
+
+**Alerta de Liquidez:**
+- Banner naranja: "Alerta de liquidez: Fondo Emprender vence en 13 días — $5.2M COP pendiente de renovación"
+
+**Tabla: Fuentes de Financiamiento Externo**
+- Columnas: Entidad | Tipo | Monto | Tasa | Vencimiento | Estado
+- 5+ entidades (BanColombia, Fondo Emprender, Banco Agrario, USAID, Coomeva)
+
+**Gráfico: Distribución por Entidad (Horizontal Bar)**
+- Mostrar % de cartera por fuente externa
+- Colores diferenciados
+
+**Sección: Próximos Vencimientos**
+- Cards de alerta para cada vencimiento próximo
+- Ejemplo: "30 Abr | Fondo Emprender | $5.2M | URGENTE"
+
+---
+
 ## FASE 0: CAMBIOS EN ARQUITECTURA PRINCIPAL
 
 ### 1. **Modificar `src/App.jsx`** (CAMBIO CLAVE)
@@ -234,13 +279,21 @@ No existen (hay que crearlos):
 - [ ] Badges de logros
 - [ ] Notificaciones
 
-### Paso 6: Integración (15 min)
+### Paso 6: Módulo Cartera (45 min)
+- [ ] Crear CarteraModule.jsx como módulo independiente
+- [ ] Implementar 2 tabs (Interna y Externa)
+- [ ] Tab Interna: KPIs + Alerta + Tabla Deudores
+- [ ] Tab Externa: KPIs + Alerta Liquidez + Tabla Fuentes + Gráfico + Próximos Vencimientos
+- [ ] Importar en Platform.jsx navigation
+
+### Paso 7: Integración (15 min)
 - [ ] Modificar App.jsx con selector de rol
 - [ ] Modificar Platform.jsx para renderizar 3 vistas
 - [ ] Pasar userRole como prop
+- [ ] Agregar CarteraModule al switch de renderizado
 - [ ] Testing de cambios entre vistas
 
-### Paso 7: Refinamiento (15 min)
+### Paso 8: Refinamiento (15 min)
 - [ ] Ajustar estilos
 - [ ] Validar responsive
 - [ ] Testing de datos

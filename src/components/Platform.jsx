@@ -12,11 +12,13 @@ import {
   Bell,
   Settings,
   ChevronDown,
+  Layers,
 } from 'lucide-react'
 
 import DashboardModule from './modules/DashboardModule'
 import AhorroModule from './modules/AhorroModule'
 import CreditoModule from './modules/CreditoModule'
+import CarteraModule from './modules/CarteraModule'
 import ProyectosModule from './modules/ProyectosModule'
 import CapacitacionesModule from './modules/CapacitacionesModule'
 import AnalisisModule from './modules/AnalisisModule'
@@ -31,6 +33,7 @@ const NAV_ITEMS = [
   { id: 'dashboard',      label: 'Dashboard',       icon: LayoutDashboard },
   { id: 'ahorro',         label: 'Ahorro ACAP',     icon: PiggyBank       },
   { id: 'credito',        label: 'Crédito',         icon: CreditCard      },
+  { id: 'cartera',        label: 'Cartera',         icon: Layers          },
   { id: 'proyectos',      label: 'Proyectos',       icon: FolderKanban    },
   { id: 'capacitaciones', label: 'Capacitaciones',  icon: GraduationCap   },
   { id: 'analisis',       label: 'Análisis IA',     icon: Brain           },
@@ -42,6 +45,7 @@ const MODULE_TITLES = {
   dashboard:      'Dashboard',
   ahorro:         'Ahorro ACAP',
   credito:        'Crédito',
+  cartera:        'Cartera',
   proyectos:      'Proyectos',
   capacitaciones: 'Capacitaciones',
   analisis:       'Análisis IA',
@@ -68,6 +72,7 @@ function renderModule(activeModule, setActiveModule, userRole) {
   switch (activeModule) {
     case 'ahorro':         return <AhorroModule         {...sharedProps} />
     case 'credito':        return <CreditoModule        {...sharedProps} />
+    case 'cartera':        return <CarteraModule        {...sharedProps} />
     case 'proyectos':      return <ProyectosModule      {...sharedProps} />
     case 'capacitaciones': return <CapacitacionesModule {...sharedProps} />
     case 'analisis':       return <AnalisisModule       {...sharedProps} />
@@ -85,7 +90,7 @@ export default function Platform({ userRole = 'usuario' }) {
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: '#F8FAFC', color: '#1E293B' }}>
 
-      {/* ── SIDEBAR ─────────────────────────────────────────────── */}
+      {/* ── SIDEBAR ────────────────────────────���────────────────── */}
       <aside
         className="fixed left-0 top-0 h-screen w-60 flex flex-col z-30"
         style={{ backgroundColor: '#1a3c6e' }}
